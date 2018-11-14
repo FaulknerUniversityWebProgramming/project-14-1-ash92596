@@ -96,9 +96,39 @@
                         
                           <div class="mdl-tabs__panel is-active" id="address-panel">
                               
-                           <?php   
-                             /* display requested employee's information */
-                           ?>
+                           <?php
+                                          $link = mysqli_connect("localhost", "root", "ashleigh1", "book"); 
+
+                                          if($link === false){ 
+                                              die("ERROR: Could not connect. " 
+                                                          . mysqli_connect_error()); 
+                                          } 
+
+                                          $id = $_GET['employee'];
+                                          $sql = "SELECT FirstName, LastName, Address, City, Region, Country, Postal, Email, Employees.EmployeeID
+                                                  FROM Employees INNER JOIN EmployeeToDo ON Employees.EmployeeID=EmployeeToDo.EmployeeID WHERE Employees.EmployeeID=". $_GET['employee']; 
+                                          if($res = mysqli_query($link, $sql)){ 
+                                              if(mysqli_num_rows($res) > 0){ 
+                                                echo "<ul style='list-style: none;'>";
+                                                  while($row = mysqli_fetch_array($res)){ 
+                                                      echo "<li><p>" . $row["FirstName"] . 
+                                                        " " . $row["LastName"] . "<br>" . $row["Address"] . 
+                                                        "<br>" . $row["City"] . ", " . $row["Region"] . 
+                                                        "<br>" . $row["Country"] . ", " . $row["Postal"] . 
+                                                        "<br>" . $row["Email"] . "</p></li>";
+                                                  } 
+                                                  echo "</ul>";
+                                                  mysqli_free_result($res); 
+                                              } else{ 
+                                                  echo "No Matching records are found."; 
+                                              } 
+                                          } else{ 
+                                              echo "ERROR: Could not able to execute $sql. "  
+                                                                          . mysqli_error($link); 
+                                          } 
+
+                                          mysqli_close($link); 
+                                      ?> 
                            
          
                           </div>
@@ -107,22 +137,49 @@
                                <?php                       
                                  /* retrieve for selected employee;
                                     if none, display message to that effect */
-                               ?>                                  
-                            
-                                <table class="mdl-data-table  mdl-shadow--2dp">
-                                  <thead>
-                                    <tr>
-                                      <th class="mdl-data-table__cell--non-numeric">Date</th>
-                                      <th class="mdl-data-table__cell--non-numeric">Status</th>
-                                      <th class="mdl-data-table__cell--non-numeric">Priority</th>
-                                      <th class="mdl-data-table__cell--non-numeric">Content</th>
-                                    </tr>
-                                  </thead>
+                               ?>  
                                   <tbody>
                                    
-                                    <?php /*  display TODOs  */ ?>
-                            
-                                  </tbody>
+                                    <?php
+                                          $link = mysqli_connect("localhost", "root", "ashleigh1", "book"); 
+
+                                          if($link === false){ 
+                                              die("ERROR: Could not connect. " 
+                                                          . mysqli_connect_error()); 
+                                          } 
+
+                                          $id = $_GET['employee'];
+                                          $sql = "SELECT * FROM EmployeeToDo WHERE EmployeeID=". $_GET['employee']; 
+                                          if($res = mysqli_query($link, $sql)){ 
+                                              if(mysqli_num_rows($res) > 0){ 
+                                                  echo "<table class='mdl-data-table  mdl-shadow--2dp'>"; 
+                                                      echo "<tr>"; 
+                                                          echo "<th class='mdl-data-table__cell--non-numeric'>Date</th>"; 
+                                                          echo "<th class='mdl-data-table__cell--non-numeric'>Status</th>"; 
+                                                          echo "<th class='mdl-data-table__cell--non-numeric'>Priority</th>"; 
+                                                          echo "<th class='mdl-data-table__cell--non-numeric'>Content</th>";
+                                                      echo "</tr>"; 
+                                                  while($row = mysqli_fetch_array($res)){ 
+                                                      echo "<tr>"; 
+                                                          echo "<td>" . $row['DateBy'] . "</td>"; 
+                                                          echo "<td>" . $row['Status'] . "</td>"; 
+                                                          echo "<td>" . $row['Priority'] . "</td>";
+                                                          echo "<td>" . $row['Description'] . "</td>";
+                                                      echo "</tr>"; 
+                                                  } 
+                                                  echo "</table>"; 
+                                                  mysqli_free_result($res); 
+                                              } else{ 
+                                                  echo "No Matching records are found."; 
+                                              } 
+                                          } else{ 
+                                              echo "ERROR: Could not able to execute $sql. "  
+                                                                          . mysqli_error($link); 
+                                          } 
+
+                                          mysqli_close($link); 
+                                      ?> 
+
                                 </table>
                            
          
