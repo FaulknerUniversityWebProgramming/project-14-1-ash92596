@@ -66,7 +66,8 @@
                                 // output data of each row
                               echo "<ul style='list-style: none;'>";
                                 while($row = $result->fetch_assoc()) {
-                                  echo "<li><a href='#'><p>" . $row["FirstName"] . " " . $row["LastName"] . "</p></a></li>";
+                                  echo "<li><a href='?employee=" . $row["EmployeeID"] ."'><p>" . $row["FirstName"] . " " . $row["LastName"] . "</p></a></li>";
+                                  //echo "<li><a href='#'><p>" . $row["FirstName"] . " " . $row["LastName"] . "</p></a></li>";
                                 }
                               echo "</ul>";
                             } else {
